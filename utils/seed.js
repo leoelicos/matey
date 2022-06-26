@@ -2,7 +2,7 @@
 
 const connection = require('../config/connection');
 const { User, Thought } = require('../models');
-const { getRandomName, getRandomReactions } = require('./data');
+const { getRandomReactions } = require('./data');
 
 connection.on('error', (err) => err);
 
@@ -13,20 +13,11 @@ connection.once('open', async () => {
 
   const thoughts = [];
 
-  for (let i = 0; i < 20; i += 1) {
-    const reactions = getRandomReactions(20);
+  for (let i = 0; i < 2; i += 1) {
+    const thoughtText = getRandomReactions(2);
+    const reactions = getRandomReactions(2);
 
-    const fullName = getRandomName();
-    const first = fullName.split(' ')[0];
-    const last = fullName.split(' ')[1];
-    const github = `${first}${Math.floor(Math.random() * (99 - 18 + 1) + 18)}`;
-
-    thoughts.push({
-      first,
-      last,
-      github,
-      reactions
-    });
+    thoughts.push({ thoughtText, reactions });
   }
 
   await Thought.collection.insertMany(thoughts);
