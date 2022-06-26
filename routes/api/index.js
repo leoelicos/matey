@@ -1,3 +1,5 @@
+'use strict';
+
 const router = require('express').Router();
 const courseRoutes = require('./courseRoutes');
 const studentRoutes = require('./studentRoutes');

@@ -1,12 +1,7 @@
+'use strict';
+
 const router = require('express').Router();
-const {
-  getStudents,
-  getSingleStudent,
-  createStudent,
-  deleteStudent,
-  addAssignment,
-  removeAssignment,
-} = require('../../controllers/studentController');
+const { getStudents, getSingleStudent, createStudent, deleteStudent, addReaction, removeReaction } = require('../../controllers/studentController');
 
 // /api/students
 router.route('/').get(getStudents).post(createStudent);
@@ -14,10 +9,10 @@ router.route('/').get(getStudents).post(createStudent);
 // /api/students/:studentId
 router.route('/:studentId').get(getSingleStudent).delete(deleteStudent);
 
-// /api/students/:studentId/assignments
-router.route('/:studentId/assignments').post(addAssignment);
+// /api/students/:studentId/reactions
+router.route('/:studentId/reactions').post(addReaction);
 
-// /api/students/:studentId/assignments/:assignmentId
-router.route('/:studentId/assignments/:assignmentId').delete(removeAssignment);
+// /api/students/:studentId/reactions/:reactionId
+router.route('/:studentId/reactions/:reactionId').delete(removeReaction);
 
 module.exports = router;
