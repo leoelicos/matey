@@ -45,7 +45,7 @@ npm install
 
 ## Video Demo
 
-_In progress_
+https://user-images.githubusercontent.com/99461390/175824930-744c309d-6375-4f2e-bffa-e9a98946c363.mp4
 
 ## Social Network API
 
@@ -110,15 +110,40 @@ GET http://localhost:3001/api/users
 Request:
 
 ```sh
-GET http://localhost:3001/api/users
+GET http://localhost:3001/api/users/62b889b433eb59d6a552eb3e
 ```
 
 Response:
 
 ```sh
-[
 
-]
+{
+	"_id": "62b889b433eb59d6a552eb3e",
+	"username": "ronweasley",
+	"email": "rw@hw.com",
+	"thoughts": [
+		{
+			"_id": "62b88a5b33eb59d6a552eb5d",
+			"thoughtText": "Spiders are scary",
+			"username": "ronweasley",
+			"createdAt": "Monday, 27 June 2022",
+			"reactions": [
+				{
+					"reactionBody": "No, they're not!",
+					"username": "hermionegranger",
+					"_id": "62b88a9733eb59d6a552eb66",
+					"reactionId": "62b88a9733eb59d6a552eb67",
+					"createdAt": "Monday, 27 June 2022"
+				}
+			],
+			"__v": 0,
+			"reactionCount": 1
+		}
+	],
+	"friends": [],
+	"friendCount": 0
+}
+
 ```
 
 ## Screenshots
