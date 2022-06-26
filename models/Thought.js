@@ -3,32 +3,44 @@
 const { Schema, model } = require('mongoose');
 const reactionSchema = require('./Reaction');
 
-// Schema to create Thought model
 const thoughtSchema = new Schema(
   {
-    first: {
+    thoughtText: {
       type: String,
       required: true,
-      max_length: 50
+      maxLength: 280,
+      minLength: 1
     },
-    last: {
-      type: String,
-      required: true,
-      max_length: 50
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: (createdAt) => {
+        return createdAt.toLocaleDateString(undefined, {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
     },
-    github: {
+    username: {
       type: String,
-      required: true,
-      max_length: 50
+      required: true
     },
     reactions: [reactionSchema]
   },
   {
     toJSON: {
+      virtuals: true,
       getters: true
-    }
+    },
+    id: false
   }
 );
+
+thoughtSchema.virtual('reactionCount').get(function () {
+  return this.reactions.length;
+});
 
 const Thought = model('thought', thoughtSchema);
 
