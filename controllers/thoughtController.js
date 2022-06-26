@@ -1,6 +1,6 @@
 'use strict';
 
-const { Thought, User } = require('../models');
+const { User, Thought } = require('../models');
 
 module.exports = {
   // Get all thoughts
@@ -85,31 +85,38 @@ module.exports = {
 
   // Add a reaction to a thought
   async addReaction(req, res) {
-    // check if the friend exists in user database
-    const friend = await User.findOne({ _id: req.params.friendId }).exec();
-
-    if (!friend) {
-      res.status(404).json('friend does not exist');
-      return;
-    }
-
-    Thought.findOneAndUpdate({ _id: req.params.thoughtId }, { $addToSet: { reactions: req.body } }, { runValidators: true, new: true })
-      .then((thought) => (!thought ? res.status(404).json({ message: 'No thought found with that ID :(' }) : res.json(thought)))
+    Thought.findOneAndUpdate(
+      // find user that matches the username
+      { _id: req.params.thoughtId },
+      { $addToSet: { reactions: req.body } },
+      { new: true }
+    )
+      .select('-__v')
+      .populate('reactions')
+      .then((thought) =>
+        !thought
+          ? // no thought
+            res.status(404).json({ message: 'Reaction created, but found no thought with that id' })
+          : res.json({ message: 'Success!', thought })
+      )
       .catch((err) => res.status(500).json(err));
   },
 
   // Remove reaction from a thought
   async removeReaction(req, res) {
-    // check if the friend exists in user database
-    const friend = await User.findOne({ _id: req.params.friendId }).exec();
-
-    if (!friend) {
-      res.status(404).json('friend does not exist');
-      return;
-    }
-
-    Thought.findOneAndUpdate({ _id: req.params.thoughtId }, { $pull: { reaction: { reactionId: req.params.reactionId } } }, { runValidators: true, new: true })
-      .then((thought) => (!thought ? res.status(404).json({ message: 'No thought found with that ID :(' }) : res.json(thought)))
+    Thought.findOneAndUpdate(
+      // find thought with id that matches thoughtId
+      { _id: req.params.thoughtId },
+      { $pull: { reactions: { _id: req.params.reactionId } } },
+      { new: true }
+    )
+      .select('-__v')
+      .populate('reactions')
+      .then((thought) =>
+        !thought
+          ? res.status(404).json({ message: 'Reaction deleted, but no thoughts found' }) // success message
+          : res.json({ message: 'Reaction successfully deleted' })
+      )
       .catch((err) => res.status(500).json(err));
   }
 };
