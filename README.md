@@ -47,6 +47,8 @@ npm install
 
 https://user-images.githubusercontent.com/99461390/175824930-744c309d-6375-4f2e-bffa-e9a98946c363.mp4
 
+Video is also available on [YouTube](https://www.youtube.com/watch?v=U6-XyI3JuZo)
+
 ## Social Network API
 
 ### Root endpoint and API endpoint
