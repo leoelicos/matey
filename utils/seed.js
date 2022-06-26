@@ -1,17 +1,17 @@
 'use strict';
 
 const connection = require('../config/connection');
-const { Course, Student } = require('../models');
+const { User, Thought } = require('../models');
 const { getRandomName, getRandomReactions } = require('./data');
 
 connection.on('error', (err) => err);
 
 connection.once('open', async () => {
-  await Course.deleteMany({});
+  await User.deleteMany({});
 
-  await Student.deleteMany({});
+  await Thought.deleteMany({});
 
-  const students = [];
+  const thoughts = [];
 
   for (let i = 0; i < 20; i += 1) {
     const reactions = getRandomReactions(20);
@@ -21,7 +21,7 @@ connection.once('open', async () => {
     const last = fullName.split(' ')[1];
     const github = `${first}${Math.floor(Math.random() * (99 - 18 + 1) + 18)}`;
 
-    students.push({
+    thoughts.push({
       first,
       last,
       github,
@@ -29,13 +29,13 @@ connection.once('open', async () => {
     });
   }
 
-  await Student.collection.insertMany(students);
+  await Thought.collection.insertMany(thoughts);
 
-  await Course.collection.insertOne(
+  await User.collection.insertOne(
     {
-      courseName: 'UCLA',
+      userName: 'UCLA',
       inPerson: false,
-      students: students.map((s) => s._id)
+      thoughts: thoughts.map((s) => s._id)
     },
     { new: true }
   );
