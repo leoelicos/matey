@@ -35,8 +35,6 @@ cd ..
 
 npm install
 
-//optional
-npm run seed
 ```
 
 ## Usage
