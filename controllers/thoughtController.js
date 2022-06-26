@@ -33,7 +33,9 @@ module.exports = {
           { username: req.body.username },
           { $addToSet: { thoughts: thought._id } },
           { new: true }
-        );
+        )
+          .select('-__v')
+          .populate('thoughts');
       })
       .then((user) =>
         !user
