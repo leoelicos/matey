@@ -1,41 +1,14 @@
 'use strict';
 
-// ObjectId() method for converting thoughtId string into an ObjectId for querying database
-const { ObjectId } = require('mongoose').Types;
 const { Thought, User } = require('../models');
-
-const headCount = async () =>
-  Thought.aggregate()
-    .count('thoughtCount')
-    .then((numberOfThoughts) => numberOfThoughts);
-
-// Execute the aggregate method on the Thought model and calculate the overall grade by using the $avg operator
-const grade = async (thoughtId) =>
-  Thought.aggregate([
-    {
-      $match: { _id: ObjectId(thoughtId) }
-    },
-    {
-      $unwind: '$reactions'
-    },
-    {
-      $group: {
-        _id: ObjectId(thoughtId),
-        overallGrade: { $avg: '$reactions.score' }
-      }
-    }
-  ]);
 
 module.exports = {
   // Get all thoughts
   getThoughts(req, res) {
     Thought.find()
+      .select('-__v')
       .then(async (thoughts) => {
-        const thoughtObj = {
-          thoughts,
-          headCount: await headCount()
-        };
-        return res.json(thoughtObj);
+        res.json(thoughts);
       })
       .catch((err) => {
         return res.status(500).json(err);
@@ -45,8 +18,7 @@ module.exports = {
   getSingleThought(req, res) {
     Thought.findOne({ _id: req.params.thoughtId })
       .select('-__v')
-      .lean()
-      .then(async (thought) => (!thought ? res.status(404).json({ message: 'No thought with that ID' }) : res.json({ thought, grade: await grade(req.params.thoughtId) })))
+      .then(async (thought) => (!thought ? res.status(404).json({ message: 'No thought with that ID' }) : res.json(thought)))
       .catch((err) => {
         return res.status(500).json(err);
       });
@@ -54,13 +26,57 @@ module.exports = {
   // create a new thought
   createThought(req, res) {
     Thought.create(req.body)
-      .then((thought) => res.json(thought))
+
+      .then((thought) => {
+        return User.findOneAndUpdate(
+          // find user that matches the username
+          { username: req.body.username },
+          { $addToSet: { thoughts: thought._id } },
+          { new: true }
+        )
+          .select('-__v')
+          .populate('thoughts');
+      })
+      .then((user) =>
+        !user
+          ? // no user
+            res.status(404).json({ message: 'Thought created, but found no user with that username' })
+          : res.json({ message: 'Success!', user })
+      )
+      .catch((err) => res.status(500).json(err));
+  },
+  async updateThought(req, res) {
+    const user = await User.findOne({ username: req.body.username }).exec();
+
+    if (!user) {
+      res.status(404).json('username does not exist');
+      return;
+    }
+
+    Thought.findOneAndUpdate(
+      // find thought that matches the parameter
+      { _id: req.params.thoughtId },
+      { $set: req.body },
+      { runValidators: true, new: true }
+    )
+      .then((thought) => (!thought ? res.status(404).json({ message: 'No thought with this id!' }) : res.json(thought)))
       .catch((err) => res.status(500).json(err));
   },
   // Delete a thought and remove them from the user
-  deleteThought(req, res) {
+  async deleteThought(req, res) {
     Thought.findOneAndRemove({ _id: req.params.thoughtId })
-      .then((thought) => (!thought ? res.status(404).json({ message: 'No such thought exists' }) : User.findOneAndUpdate({ thoughts: req.params.thoughtId }, { $pull: { thoughts: req.params.thoughtId } }, { new: true })))
+      .then((thought) =>
+        !thought
+          ? // if no thought found, return error message
+            res.status(404).json({ message: 'No such thought exists' })
+          : // otherwise, update the user
+            User.findOneAndUpdate(
+              // find user with username that matches
+              { username: thought.username },
+              { $pull: { thoughts: req.params.thoughtId } },
+              { new: true }
+            )
+      )
       .then((user) => (!user ? res.status(404).json({ message: 'Thought deleted, but no users found' }) : res.json({ message: 'Thought successfully deleted' })))
       .catch((err) => {
         res.status(500).json(err);
