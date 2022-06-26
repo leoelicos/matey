@@ -2,9 +2,9 @@
 
 const { Schema, model } = require('mongoose');
 
-const courseSchema = new Schema(
+const userSchema = new Schema(
   {
-    courseName: {
+    userName: {
       type: String,
       required: true
     },
@@ -20,10 +20,10 @@ const courseSchema = new Schema(
       type: Date,
       default: () => new Date(+new Date() + 84 * 24 * 60 * 60 * 1000)
     },
-    students: [
+    thoughts: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'student'
+        ref: 'thought'
       }
     ]
   },
@@ -35,6 +35,6 @@ const courseSchema = new Schema(
   }
 );
 
-const Course = model('course', courseSchema);
+const User = model('user', userSchema);
 
-module.exports = Course;
+module.exports = User;
