@@ -1,29 +1,32 @@
 'use strict';
 
+const { isEmail } = require('validator');
 const { Schema, model } = require('mongoose');
 
 const userSchema = new Schema(
   {
-    userName: {
+    username: {
       type: String,
-      required: true
+      required: true,
+      unique: true,
+      trim: true
     },
-    inPerson: {
-      type: Boolean,
-      default: true
-    },
-    startDate: {
-      type: Date,
-      default: Date.now()
-    },
-    endDate: {
-      type: Date,
-      default: () => new Date(+new Date() + 84 * 24 * 60 * 60 * 1000)
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      validate: [isEmail, 'Please fill a valid email address']
     },
     thoughts: [
       {
         type: Schema.Types.ObjectId,
         ref: 'thought'
+      }
+    ],
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
       }
     ]
   },
