@@ -31,10 +31,10 @@ connection.once('open', async () => {
 
   await Thought.collection.insertMany(thoughts);
 
-  await User.collection.insertOne(
+  User.collection.insertOne(
     {
-      userName: 'UCLA',
-      inPerson: false,
+      username: 'harrypotter',
+      email: 'hp@hogwarts.com',
       thoughts: thoughts.map((s) => s._id)
     },
     { new: true }
