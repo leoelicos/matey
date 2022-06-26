@@ -131,7 +131,7 @@ TBA
 
 ## Credits
 
--  BCS Resources
+- BCS Resources
 
 ## License
 

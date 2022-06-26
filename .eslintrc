@@ -1,0 +1,15 @@
+{
+  "extends": ["airbnb-base/legacy", "prettier"],
+  "parserOptions": {
+    "ecmaVersion": 2017
+  },
+  "rules": {
+    "max-len": "off",
+    "implicit-arrow-linebreak": "off",
+    "object-curly-newline": "off",
+    "no-underscore-dangle": "off"
+  },
+  "env": {
+    "es6": true
+  }
+}
