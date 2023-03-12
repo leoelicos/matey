@@ -1,6 +1,4 @@
-'use strict';
-
-const { User, Thought } = require('../models');
+const { User, Thought } = require('../models')
 
 module.exports = {
   // Get all thoughts
@@ -8,11 +6,11 @@ module.exports = {
     Thought.find()
       .select('-__v')
       .then(async (thoughts) => {
-        res.json(thoughts);
+        res.json(thoughts)
       })
       .catch((err) => {
-        return res.status(500).json(err);
-      });
+        return res.status(500).json(err)
+      })
   },
   // Get a single thought
   getSingleThought(req, res) {
@@ -20,8 +18,8 @@ module.exports = {
       .select('-__v')
       .then(async (thought) => (!thought ? res.status(404).json({ message: 'No thought with that ID' }) : res.json(thought)))
       .catch((err) => {
-        return res.status(500).json(err);
-      });
+        return res.status(500).json(err)
+      })
   },
   // create a new thought
   createThought(req, res) {
@@ -35,7 +33,7 @@ module.exports = {
           { new: true }
         )
           .select('-__v')
-          .populate('thoughts');
+          .populate('thoughts')
       })
       .then((user) =>
         !user
@@ -43,14 +41,14 @@ module.exports = {
             res.status(404).json({ message: 'Thought created, but found no user with that username' })
           : res.json({ message: 'Success!', user })
       )
-      .catch((err) => res.status(500).json(err));
+      .catch((err) => res.status(500).json(err))
   },
   async updateThought(req, res) {
-    const user = await User.findOne({ username: req.body.username }).exec();
+    const user = await User.findOne({ username: req.body.username }).exec()
 
     if (!user) {
-      res.status(404).json('username does not exist');
-      return;
+      res.status(404).json('username does not exist')
+      return
     }
 
     Thought.findOneAndUpdate(
@@ -60,7 +58,7 @@ module.exports = {
       { runValidators: true, new: true }
     )
       .then((thought) => (!thought ? res.status(404).json({ message: 'No thought with this id!' }) : res.json(thought)))
-      .catch((err) => res.status(500).json(err));
+      .catch((err) => res.status(500).json(err))
   },
   // Delete a thought and remove them from the user
   async deleteThought(req, res) {
@@ -79,8 +77,8 @@ module.exports = {
       )
       .then((user) => (!user ? res.status(404).json({ message: 'Thought deleted, but no users found' }) : res.json({ message: 'Thought successfully deleted' })))
       .catch((err) => {
-        res.status(500).json(err);
-      });
+        res.status(500).json(err)
+      })
   },
 
   // Add a reaction to a thought
@@ -99,7 +97,7 @@ module.exports = {
             res.status(404).json({ message: 'Reaction created, but found no thought with that id' })
           : res.json({ message: 'Success!', thought })
       )
-      .catch((err) => res.status(500).json(err));
+      .catch((err) => res.status(500).json(err))
   },
 
   // Remove reaction from a thought
@@ -117,6 +115,6 @@ module.exports = {
           ? res.status(404).json({ message: 'Reaction deleted, but no thoughts found' }) // success message
           : res.json({ message: 'Reaction successfully deleted' })
       )
-      .catch((err) => res.status(500).json(err));
+      .catch((err) => res.status(500).json(err))
   }
-};
+}
