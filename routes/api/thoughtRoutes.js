@@ -1,18 +1,16 @@
-'use strict';
-
-const router = require('express').Router();
-const { getThoughts, getSingleThought, createThought, updateThought, deleteThought, addReaction, removeReaction } = require('../../controllers/thoughtController');
+const router = require('express').Router()
+import { getThoughts, getSingleThought, createThought, updateThought, deleteThought, addReaction, removeReaction } from '../../controllers/thoughtController'
 
 // /api/thoughts
-router.route('/').get(getThoughts).post(createThought);
+router.route('/').get(getThoughts).post(createThought)
 
 // /api/thoughts/:thoughtId
-router.route('/:thoughtId').get(getSingleThought).put(updateThought).delete(deleteThought);
+router.route('/:thoughtId').get(getSingleThought).put(updateThought).delete(deleteThought)
 
 // /api/thoughts/:thoughtId/reactions
-router.route('/:thoughtId/reactions').post(addReaction);
+router.route('/:thoughtId/reactions').post(addReaction)
 
 // /api/thoughts/:thoughtId/reactions/:reactionId
-router.route('/:thoughtId/reactions/:reactionId').delete(removeReaction);
+router.route('/:thoughtId/reactions/:reactionId').delete(removeReaction)
 
-module.exports = router;
+export default router
