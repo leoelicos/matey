@@ -1,18 +1,16 @@
-'use strict';
+import express, { urlencoded, json } from 'express'
+import { once } from './config/connection'
+import routes from './routes'
 
-const express = require('express');
-const db = require('./config/connection');
-const routes = require('./routes');
+const PORT = process.env.port || 3001
+const app = express()
 
-const PORT = process.env.port || 3001;
-const app = express();
+app.use(urlencoded({ extended: true }))
+app.use(json())
+app.use(routes)
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(routes);
-
-db.once('open', () => {
+once('open', () => {
   app.listen(PORT, () => {
-    console.log(`API server running on port ${PORT}!`);
-  });
-});
+    console.log(`API server running on port ${PORT}!`)
+  })
+})
