@@ -1,7 +1,5 @@
-'use strict';
-
-const { Schema, model } = require('mongoose');
-const reactionSchema = require('./Reaction');
+import { Schema, model } from 'mongoose'
+import reactionSchema from './Reaction'
 
 const thoughtSchema = new Schema(
   {
@@ -20,7 +18,7 @@ const thoughtSchema = new Schema(
           year: 'numeric',
           month: 'long',
           day: 'numeric'
-        });
+        })
       }
     },
     username: {
@@ -36,12 +34,12 @@ const thoughtSchema = new Schema(
     },
     id: false
   }
-);
+)
 
 thoughtSchema.virtual('reactionCount').get(function () {
-  return this.reactions.length;
-});
+  return this.reactions.length
+})
 
-const Thought = model('thought', thoughtSchema);
+const Thought = model('thought', thoughtSchema)
 
-module.exports = Thought;
+export default Thought
