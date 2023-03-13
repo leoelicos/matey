@@ -1,10 +1,8 @@
-'use strict';
+const router = require('express').Router()
+import apiRoutes from './api'
 
-const router = require('express').Router();
-const apiRoutes = require('./api');
+router.use('/api', apiRoutes)
 
-router.use('/api', apiRoutes);
+router.use((req, res) => res.send('Wrong route!'))
 
-router.use((req, res) => res.send('Wrong route!'));
-
-module.exports = router;
+export default router
