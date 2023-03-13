@@ -1,4 +1,5 @@
-const router = require('express').Router()
+import  Router from 'express'
+const router = Router()
 import { getUsers, getSingleUser, createUser, updateUser, deleteUser, addFriend, removeFriend } from '../../controllers/userController.js'
 
 // /api/users
