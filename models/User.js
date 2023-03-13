@@ -1,4 +1,5 @@
-import { isEmail } from 'validator'
+import pkg from 'validator'
+const { isEmail } = pkg
 import { Schema, model } from 'mongoose'
 
 const userSchema = new Schema(
