@@ -2,8 +2,8 @@ import Router from 'express'
 const router = Router()
 import {
   getThoughts,
-  getSingleThought,
   createThought,
+  getSingleThought,
   updateThought,
   deleteThought,
   addReaction,
