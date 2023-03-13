@@ -1,4 +1,4 @@
-import { User, Thought } from '../models'
+import { User, Thought } from '../models/index.js'
 
 export function getUsers(req, res) {
   User.find()
