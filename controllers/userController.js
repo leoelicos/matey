@@ -3,7 +3,11 @@ import { User, Thought } from '../models/index.js'
 export function getUsers(req, res) {
   User.find()
     .select('-__v')
-    .populate('thoughts')
+    .populate({
+      path: 'thoughts',
+      select: '-__v'
+    })
+
     .then((users) => res.json(users))
     .catch((err) => res.status(500).json(err))
 }
