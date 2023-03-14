@@ -10,5 +10,4 @@ connect(connectionString, {
   useUnifiedTopology: true
 })
 
-// export connection
 export default connection
