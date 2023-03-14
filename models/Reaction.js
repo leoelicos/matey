@@ -1,6 +1,4 @@
-'use strict';
-
-const { Schema, Types } = require('mongoose');
+import { Schema, Types } from 'mongoose'
 
 const reactionSchema = new Schema(
   {
@@ -26,7 +24,7 @@ const reactionSchema = new Schema(
           year: 'numeric',
           month: 'long',
           day: 'numeric'
-        });
+        })
       }
     }
   },
@@ -34,8 +32,8 @@ const reactionSchema = new Schema(
     toJSON: {
       getters: true
     },
-    id: false
+    _id: false
   }
-);
+)
 
-module.exports = reactionSchema;
+export default reactionSchema
