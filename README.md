@@ -10,6 +10,8 @@ This CLI application uses npm packages `Express`, `Mongoose` and `nodemon`.
 
 I made this app in order to learn how to implement a MongoDB ODM using Mongoose.
 
+Deployed API: https://matey.herokuapp.com/api/users
+
 ## Installation
 
 ### 0. Required
