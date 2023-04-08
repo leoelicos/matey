@@ -1,4 +1,4 @@
-# Social Network API
+# matey
 
 ![Mongoose](https://img.shields.io/badge/6.4.0-0?label=Mongoose&style=for-the-badge&labelColor=white&color=black) ![Express](https://img.shields.io/badge/4.18.1-0?label=Express&style=for-the-badge&labelColor=white&color=black) ![mongoDB](https://img.shields.io/badge/2.2.1-0?label=MongoDB&style=for-the-badge&labelColor=white&color=black)
 
@@ -23,9 +23,9 @@ I made this app in order to learn how to implement a MongoDB ODM using Mongoose.
 ### 1. Git clone and go inside
 
 ```sh
-git clone https://github.com/leoelicos/social-network-api.git
+git clone https://github.com/leoelicos/matey.git
 
-cd social-network-api
+cd matey
 ```
 
 ### 2. Install dependencies, (optionally) run seed
